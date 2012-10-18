@@ -1,6 +1,7 @@
 /*
 *Chris Card
-*10/9/2012
+*Ben Gillman
+*10/18/2012
 *This class contains the icon to be drawn and methods for clicking the icon
 */
 package csci422.ccard.androidmathtutor;
@@ -16,18 +17,18 @@ public class Targets {
 
 	private Matrix mat;
 	private Point loc;
+	private Point origin;
 	private Bitmap bit;//icon to draw
 	private final int iceburg = 20;//increases the touch area that user can click
-	private boolean inbasket;
-	private boolean isbasket = false;
+	private boolean isanswer = false;
 
 	public Targets(int icon, Point loc, Context ctxt)
 	{
 		this.loc = loc;
+		origin = loc;
 		mat = new Matrix();
 		mat.postTranslate((float)loc.x,(float)loc.y);
 		bit = BitmapFactory.decodeResource(ctxt.getResources(), icon);
-		inbasket = false;
 	}
 
 	/**
@@ -42,23 +43,14 @@ public class Targets {
 	/**
 	 * only call if it is the basket
 	 */
-	public void isBasket()
+	public void isAnswer()
 	{
-		isbasket = true;
+		isanswer = true;
 	}
 	
-	public boolean isABasket()
+	public boolean isAnAnswer()
 	{
-		return isbasket;
-	}
-	
-	/**
-	 * this checks the inbasket flag
-	 * @return true if it is false other wise
-	 */
-	public boolean inAbasket()
-	{
-		return inbasket;
+		return isanswer;
 	}
 
 	/**
@@ -68,10 +60,7 @@ public class Targets {
 	 */
 	public void move(float dx, float dy)
 	{
-		if(!inbasket)
-		{
 			mat.postTranslate(dx,dy);
-		}
 	}
 	
 	/**
@@ -82,17 +71,6 @@ public class Targets {
 		float locs[] = new float[9];
 		mat.getValues(locs);
 		loc.set((int)locs[2], (int)locs[5]);
-	}
-
-	/**
-	 * toggles inbasket flag to true if it isn't true
-	 */
-	public void inBasket()
-	{
-		if (!inbasket)
-		{
-			inbasket = true;
-		}
 	}
 	
 	public Matrix getMat()
@@ -109,7 +87,7 @@ public class Targets {
 		canvas.drawBitmap(bit, mat, null);
 	}
 
-	public boolean isInbasket(Targets other)
+	public boolean isInAnswer(Targets other)
 	{
 		float thiss[] = new float[9];
 		float others[] = new float[9];
@@ -135,7 +113,7 @@ public class Targets {
 	 */
 	public boolean hasPoint(Point p)
 	{
-		if(!isbasket)
+		if(!isanswer)
 		{
 			//if it is bounded in the x axis by the icon
 			if ((p.x > (loc.x - iceburg)) && (p.x < (loc.x + bit.getWidth() + iceburg)))

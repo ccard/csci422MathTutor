@@ -1,6 +1,7 @@
 /*
  * Chris Card
- * 10/9/2012
+ * Ben Gillman
+ * 10/18/2012
  * This is the main class
  */
 package csci422.ccard.androidmathtutor;
@@ -29,6 +30,8 @@ public class MathTutor extends Activity {
 
     private ArrayList<Targets> icons;
 
+    private final int imag[] = {R.drawable.zero, R.drawable.one, R.drawable.two, R.drawable.three ,R.drawable.four ,R.drawable.five, R.drawable.six, R.drawable.seven, R.drawable.eight, R.drawable.nine};
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,23 +51,17 @@ public class MathTutor extends Activity {
         Display dis = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         dis.getSize(size);
-        width = size.x/2;
-        height = size.y/2.0;
+        width = size.x/3.0;
+        height = size.y/5.0;
         Point loc = new Point();
         loc.set(50, 50);
         icons = new ArrayList<Targets>();
         
-        icons.add(new Targets(R.drawable.orange, loc, this));//first  orange
-        
-        loc = new Point((int) (loc.x+width), loc.y);
-        icons.add(new Targets(R.drawable.orange, loc, this));//second orange
-        
-        loc = new Point(50, (int) (loc.y+80));
-        icons.add(new Targets(R.drawable.orange, loc, this));//third orange
-
-        loc = new Point((int)(width-100), (int)(height+100));
-        icons.add(0,new Targets(R.drawable.basket, loc, this));//basket
-        icons.get(0).isBasket();
+        for (int i = 0; i < 10; i++) 
+        {
+            icons.add(new Targets(imag[i], loc, this));
+            
+        }
     }
 
     /**
@@ -139,10 +136,9 @@ public class MathTutor extends Activity {
                 
                 Point fin = new Point((int)(e1.getX()+distanceX), (int)(e2.getY()+distanceY));
                // Toast.makeText(Gesture.this, "the point is"+fin.toString(), Toast.LENGTH_LONG).show();
-                if (icons.get(0).isInbasket(temp)) 
+                if (icons.get(0).isInAnswer(temp)) 
                 {
                     temp.clicked(R.drawable.orangeplaced, MathTutor.this);
-                    temp.inBasket();
                     view.onSelected();
                 }
                 else
