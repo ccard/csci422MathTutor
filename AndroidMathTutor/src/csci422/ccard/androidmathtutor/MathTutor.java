@@ -54,13 +54,21 @@ public class MathTutor extends Activity {
         width = size.x/3.0;
         height = size.y/5.0;
         Point loc = new Point();
-        loc.set(50, 50);
+        loc.set(20, 20);
         icons = new ArrayList<Targets>();
+        icons.add(new Targets(imag[0], loc, this));
         
-        for (int i = 0; i < 10; i++) 
+        for (int i = 1; i < 10; i++) 
         {
+            if (i%3 == 0) 
+            {
+                loc.set(20, (int)(loc.y + height));
+            }
+            else
+            {
+                loc.set((int)(loc.x + width), loc.y);
+            }
             icons.add(new Targets(imag[i], loc, this));
-            
         }
     }
 
