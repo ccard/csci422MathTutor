@@ -70,6 +70,10 @@ public class MathTutor extends Activity {
             }
             icons.add(new Targets(imag[i], loc, this));
         }
+        
+        Targets answer = new Targets(R.drawable.answerbox,new Point(size.x-90,size.y-90),this);
+        answer.isAnswer();
+        icons.add(answer);
     }
 
     /**
