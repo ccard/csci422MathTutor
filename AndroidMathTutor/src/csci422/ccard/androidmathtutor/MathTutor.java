@@ -56,6 +56,11 @@ public class MathTutor extends Activity {
         Point loc = new Point();
         loc.set(20, 20);
         icons = new ArrayList<Targets>();
+
+         Targets answer = new Targets(R.drawable.answerbox,new Point(size.x-90,size.y-90),this);
+        answer.isAnswer();
+        icons.add(answer);
+
         icons.add(new Targets(imag[0], loc, this));
         
         for (int i = 1; i < 10; i++) 
@@ -71,9 +76,7 @@ public class MathTutor extends Activity {
             icons.add(new Targets(imag[i], loc, this));
         }
         
-        Targets answer = new Targets(R.drawable.answerbox,new Point(size.x-90,size.y-90),this);
-        answer.isAnswer();
-        icons.add(answer);
+       
     }
 
     /**
@@ -107,15 +110,15 @@ public class MathTutor extends Activity {
 
         public boolean onDown(MotionEvent e) {
             
-            for(Targets t : icons)
-            {
-                if (t.hasPoint(new Point((int)e.getX(),(int)e.getY()))) 
-                {
-                    t.clicked(R.drawable.orangehighlight, MathTutor.this);
-                    view.onSelected();
-                    break;
-                }
-            }
+           // for(Targets t : icons)
+           // {
+           //     if (t.hasPoint(new Point((int)e.getX(),(int)e.getY()))) 
+           //     {
+           //         t.clicked(R.drawable.orangehighlight, MathTutor.this);
+           //         view.onSelected();
+           //         break;
+           //     }
+           // }
             return true;
         }
 
@@ -147,16 +150,8 @@ public class MathTutor extends Activity {
                 view.onSelected();
                 
                 Point fin = new Point((int)(e1.getX()+distanceX), (int)(e2.getY()+distanceY));
-               // Toast.makeText(Gesture.this, "the point is"+fin.toString(), Toast.LENGTH_LONG).show();
-                if (icons.get(0).isInAnswer(temp)) 
-                {
-                    temp.clicked(R.drawable.orangeplaced, MathTutor.this);
-                    view.onSelected();
-                }
-                else
-                {
-                	temp.clicked(R.drawable.orangehighlight, MathTutor.this);
-                }
+              
+                
             }
             return true;
         }
@@ -167,22 +162,22 @@ public class MathTutor extends Activity {
         }
 
         public boolean onSingleTapUp(MotionEvent e) {
-            for(Targets t : icons)
-            {
-                if (t.hasPoint(new Point((int)e.getX(),(int)e.getY()))) 
-                {
-                	if(t.inAbasket())
-                	{
-                		t.clicked(R.drawable.orangeplaced, MathTutor.this);
-                	}
-                	else
-                	{
-                		t.clicked(R.drawable.orange, MathTutor.this);
-                	}
-                    view.onSelected();
-                    break;
-                }
-            }
+            //for(Targets t : icons)
+            //{
+            //    if (t.hasPoint(new Point((int)e.getX(),(int)e.getY()))) 
+            //    {
+            //    	if(t.inAbasket())
+            //    	{
+            //    		t.clicked(R.drawable.orangeplaced, MathTutor.this);
+            //    	}
+            //    	else
+            //    	{
+            //    		t.clicked(R.drawable.orange, MathTutor.this);
+            //    	}
+            //        view.onSelected();
+            //        break;
+            //    }
+            //}
             return true;
         }
 
@@ -225,12 +220,19 @@ public class MathTutor extends Activity {
         	 {
         		 for(Targets t : icons)
         		 {
-        			 if(!t.isABasket())
+        			 if(!t.isAnAnswer())
         			 {
-        				 if(!t.inAbasket())
-        				 {
-        					 t.clicked(R.drawable.orange, MathTutor.this);
-        				 }
+        				 //this is where you will put the answer checking.
+        				if (icons.get(0).isInAnswer(t))//check if it is answer box and if it correct answer 
+                        {
+                            t.clicked(R.drawable.correct_ans, MathTutor.this);
+                            onSelected();
+                        }
+                        else if(icons.get(0).isInAnswer(t))//and wrong answer
+                        {
+                        	t.clicked(R.drawable.wrong_ans, MathTutor.this);
+                        	onSelected();
+                        }
         				 t.setLoc();
         			 }
         		 }
