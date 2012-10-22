@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Point;
+import android.util.Log;
 
 public class Targets {
 
@@ -113,6 +114,7 @@ public class Targets {
 	 */
 	public boolean hasPoint(Point p)
 	{
+		
 		if(!isanswer)
 		{
 			//if it is bounded in the x axis by the icon

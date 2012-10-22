@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -57,7 +58,7 @@ public class MathTutor extends Activity {
         loc.set(20, 20);
         icons = new ArrayList<Targets>();
 
-         Targets answer = new Targets(R.drawable.answerbox,new Point(size.x-90,size.y-90),this);
+         Targets answer = new Targets(R.drawable.answerbox,new Point((int)(size.x/2) + 200,size.y-300),this);
         answer.isAnswer();
         icons.add(answer);
 
@@ -67,16 +68,16 @@ public class MathTutor extends Activity {
         {
             if (i%3 == 0) 
             {
-                loc.set(20, (int)(loc.y + height));
+                loc = new Point(20, (int)(loc.y + 80));
+                icons.add(new Targets(imag[i], loc, this));
             }
             else
             {
-                loc.set((int)(loc.x + width), loc.y);
+                loc = new Point((int)(loc.x + width), loc.y);
+                icons.add(new Targets(imag[i], loc, this));
             }
-            icons.add(new Targets(imag[i], loc, this));
+            
         }
-        
-       
     }
 
     /**
@@ -150,8 +151,6 @@ public class MathTutor extends Activity {
                 view.onSelected();
                 
                 Point fin = new Point((int)(e1.getX()+distanceX), (int)(e2.getY()+distanceY));
-              
-                
             }
             return true;
         }
@@ -178,7 +177,7 @@ public class MathTutor extends Activity {
             //        break;
             //    }
             //}
-            return true;
+            return false;
         }
 
     }
@@ -233,7 +232,7 @@ public class MathTutor extends Activity {
                         	t.clicked(R.drawable.wrong_ans, MathTutor.this);
                         	onSelected();
                         }
-        				 t.setLoc();
+        				t.setLoc();
         			 }
         		 }
         	 }
