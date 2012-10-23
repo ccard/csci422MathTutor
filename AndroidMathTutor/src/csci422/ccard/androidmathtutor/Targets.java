@@ -54,6 +54,13 @@ public class Targets {
 		return isanswer;
 	}
 
+	public void resetImage()
+	{
+		mat = new Matrix();
+		mat.postTranslate((float)origin.x, (float)origin.y);
+		loc.set(origin.x, origin.y);
+	}
+
 	/**
 	 * translates the matrix by dx and dy to simulate sliding
 	 * @param dx x direction
@@ -100,7 +107,7 @@ public class Targets {
 			//if it is bounded in the y axis by the icon
 			if((others[5] > (thiss[5] - iceburg)) && (others[5] < (thiss[5] + bit.getHeight() + iceburg)))
 			{
-				other.move(0, 180);
+				other.move(0, 0);
 				return true;
 			}
 		}

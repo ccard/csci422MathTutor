@@ -224,14 +224,15 @@ public class MathTutor extends Activity {
         				 //this is where you will put the answer checking.
         				if (icons.get(0).isInAnswer(t))//check if it is answer box and if it correct answer 
                         {
-                            t.clicked(R.drawable.correct_ans, MathTutor.this);
+                            icons.get(0).clicked(R.drawable.correct_ans, MathTutor.this);
                             onSelected();
                         }
                         else if(icons.get(0).isInAnswer(t))//and wrong answer
                         {
-                        	t.clicked(R.drawable.wrong_ans, MathTutor.this);
+                        	icons.get(0).clicked(R.drawable.wrong_ans, MathTutor.this);
                         	onSelected();
                         }
+                        t.resetImage();
         				t.setLoc();
         			 }
         		 }
