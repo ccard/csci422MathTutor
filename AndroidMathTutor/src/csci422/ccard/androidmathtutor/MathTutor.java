@@ -117,18 +117,19 @@ public class MathTutor extends Activity {
         }
 
         public boolean onDoubleTap(MotionEvent arg0) {
-            return true;
+        	
+        	return true;
         }
 
         public boolean onDoubleTapEvent(MotionEvent e) {
-            view.resetAllNumbers();
-            return true;
+            
+            return false;
         }
 
         public boolean onSingleTapConfirmed(MotionEvent e) {
             //when the user touchs the screen it try to find the icon touched
-            
-            return false;
+        	view.resetAllNumbers();
+            return true;
         }
 
         public boolean onDown(MotionEvent e) {
