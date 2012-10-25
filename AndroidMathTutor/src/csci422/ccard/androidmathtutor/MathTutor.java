@@ -1,14 +1,16 @@
 /*
  * Chris Card
- * Ben Gillman
+ * Ben Gilman
  * 10/18/2012
  * This is the main class
  */
 package csci422.ccard.androidmathtutor;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -20,6 +22,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 @TargetApi(13)
@@ -28,6 +32,10 @@ public class MathTutor extends Activity {
     private FrameLayout frame;
     private double height;
     private double width;
+    private int correct;
+    private int outof;
+    private Handler delay;
+    private TextView plusMinus, numOne, numTwo, right, numQuest;
 
     private ArrayList<Targets> icons;
 
@@ -37,11 +45,18 @@ public class MathTutor extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_math_tutor);
-
+        
+        correct = 0;
+        outof = 0;
+        right = (TextView)findViewById(R.id.correct);
+        numQuest = (TextView)findViewById(R.id.outof);
+        
+        delay = new Handler();
+        
         initIcons();//inits icons
         frame = (FrameLayout)findViewById(R.id.graphics_holder);
         ImageView image = new ImageView(this);
-        frame.addView(image);//addes the image view to the fram
+        frame.addView(image);//adds the image view to the frame
     }
 
     /**
@@ -58,7 +73,7 @@ public class MathTutor extends Activity {
         loc.set(20, 20);
         icons = new ArrayList<Targets>();
 
-         Targets answer = new Targets(R.drawable.answerbox,new Point((int)(size.x/2) + 200,size.y-300),this);
+        Targets answer = new Targets(R.drawable.answerbox,new Point((int)(size.x/2) + 200,size.y-300),this);
         answer.isAnswer();
         icons.add(answer);
 
@@ -78,6 +93,13 @@ public class MathTutor extends Activity {
             }
             
         }
+        
+        LinearLayout equationLayout = (LinearLayout)findViewById(R.id.equation);
+        equationLayout.setPadding(0, size.y - 300, 0, 0);
+        
+        plusMinus = (TextView)findViewById(R.id.operator);
+    	numOne = (TextView)findViewById(R.id.numOne);
+    	numTwo = (TextView)findViewById(R.id.numTwo);
     }
 
     /**
@@ -111,15 +133,6 @@ public class MathTutor extends Activity {
 
         public boolean onDown(MotionEvent e) {
             
-           // for(Targets t : icons)
-           // {
-           //     if (t.hasPoint(new Point((int)e.getX(),(int)e.getY()))) 
-           //     {
-           //         t.clicked(R.drawable.orangehighlight, MathTutor.this);
-           //         view.onSelected();
-           //         break;
-           //     }
-           // }
             return true;
         }
 
@@ -161,22 +174,7 @@ public class MathTutor extends Activity {
         }
 
         public boolean onSingleTapUp(MotionEvent e) {
-            //for(Targets t : icons)
-            //{
-            //    if (t.hasPoint(new Point((int)e.getX(),(int)e.getY()))) 
-            //    {
-            //    	if(t.inAbasket())
-            //    	{
-            //    		t.clicked(R.drawable.orangeplaced, MathTutor.this);
-            //    	}
-            //    	else
-            //    	{
-            //    		t.clicked(R.drawable.orange, MathTutor.this);
-            //    	}
-            //        view.onSelected();
-            //        break;
-            //    }
-            //}
+     
             return false;
         }
 
@@ -185,12 +183,41 @@ public class MathTutor extends Activity {
     private class ImageView extends View
     {
         private GestureDetector gesture;
+        private int theAnswer;
 
         public ImageView(Context ctxt)
         {
             super(ctxt);
             //sets gesture to a new gesturedectror
             gesture = new GestureDetector(MathTutor.this, new GestureListener(this));
+            createProblem();
+        }
+        
+        public void createProblem()
+        {
+        	Random rand = new Random();
+        	Integer num1, num2;
+        	//Randomize plus or minus operator
+        	switch(rand.nextInt(2)){
+        		//random is plus
+        		case 0:
+        			plusMinus.setText(" + ");
+        			num1 = rand.nextInt(10);
+        			num2 = rand.nextInt(10-num1);
+        			theAnswer = num1 + num2;
+        			numOne.setText(num1.toString());
+        			numTwo.setText(num2.toString());
+        			break;
+        		//random is minus
+        		case 1:
+        			plusMinus.setText(" - ");
+        			num1 = rand.nextInt(10);
+        			num2 = rand.nextInt(num1 + 1);
+        			theAnswer = num1 - num2;
+        			numOne.setText(num1.toString());
+        			numTwo.setText(num2.toString());
+        			break;
+        	}
         }
 
         /**
@@ -217,22 +244,89 @@ public class MathTutor extends Activity {
         	 }
         	 if(event.getAction() == MotionEvent.ACTION_UP)
         	 {
+        		 int expectedicon;
+        		 //gets the id of the drawen image that is the expected answer
+        		 switch(theAnswer)
+        		 {
+        		 	case 0:
+        		 		expectedicon = R.drawable.zero;
+        		 		break;
+        		 	case 1:
+        		 		expectedicon = R.drawable.one;
+        		 		break;
+        		 	case 2:
+        		 		expectedicon = R.drawable.two;
+        		 		break;
+        		 	case 3:
+        		 		expectedicon = R.drawable.three;
+        		 		break;
+        		 	case 4:
+        		 		expectedicon = R.drawable.four;
+        		 		break;
+        		 	case 5:
+        		 		expectedicon = R.drawable.five;
+        		 		break;
+        		 	case 6:
+        		 		expectedicon = R.drawable.six;
+        		 		break;
+        		 	case 7:
+        		 		expectedicon = R.drawable.seven;
+        		 		break;
+        		 	case 8:
+        		 		expectedicon = R.drawable.eight;
+        		 		break;
+        		 	case 9:
+        		 		expectedicon = R.drawable.nine;
+        		 		break;
+        		 	default:
+        		 		expectedicon = -1;
+        		 		break;
+        		 }
+        		 
         		 for(Targets t : icons)
         		 {
         			 if(!t.isAnAnswer())
         			 {
         				 //this is where you will put the answer checking.
-        				if (icons.get(0).isInAnswer(t))//check if it is answer box and if it correct answer 
+        				if (icons.get(0).isInAnswer(t) && (t.getIcon() == expectedicon))//check if it is answer box and if it correct answer 
                         {
                             icons.get(0).clicked(R.drawable.correct_ans, MathTutor.this);
+                            delay.postDelayed(new Runnable(){ 
+                        		public void run()
+                        		{
+                        			icons.get(0).clicked(R.drawable.answerbox, MathTutor.this);
+                        			createProblem();
+                        			onSelected();
+                        		}
+                        	}, 1000);
+                
+                            correct++;
+                            outof++;
+                            right.setText(String.valueOf(correct));
+                        	numQuest.setText(String.valueOf(outof));
+                            t.resetImage();
                             onSelected();
+                            
                         }
                         else if(icons.get(0).isInAnswer(t))//and wrong answer
                         {
                         	icons.get(0).clicked(R.drawable.wrong_ans, MathTutor.this);
+                        	delay.postDelayed(new Runnable(){ 
+                        		public void run()
+                        		{
+                        			icons.get(0).clicked(R.drawable.answerbox, MathTutor.this);
+                        			createProblem();
+                        			onSelected();
+                        		}
+                        	}, 1000);
+                        	
+                        	outof++;
+                        	right.setText(String.valueOf(correct));
+                        	numQuest.setText(String.valueOf(outof));
+                        	t.resetImage();
                         	onSelected();
                         }
-                        t.resetImage();
+                        
         				t.setLoc();
         			 }
         		 }

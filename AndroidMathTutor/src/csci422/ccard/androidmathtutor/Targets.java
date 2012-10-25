@@ -22,14 +22,21 @@ public class Targets {
 	private Bitmap bit;//icon to draw
 	private final int iceburg = 20;//increases the touch area that user can click
 	private boolean isanswer = false;
+	private int icon;
 
 	public Targets(int icon, Point loc, Context ctxt)
 	{
+		this.icon = icon;
 		this.loc = loc;
-		origin = loc;
+		origin = new Point(loc.x,loc.y);
 		mat = new Matrix();
 		mat.postTranslate((float)loc.x,(float)loc.y);
 		bit = BitmapFactory.decodeResource(ctxt.getResources(), icon);
+	}
+	
+	public int getIcon()
+	{
+		return icon;
 	}
 
 	/**
