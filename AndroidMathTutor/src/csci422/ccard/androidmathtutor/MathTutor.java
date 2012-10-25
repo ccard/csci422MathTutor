@@ -121,8 +121,8 @@ public class MathTutor extends Activity {
         }
 
         public boolean onDoubleTapEvent(MotionEvent e) {
-            
-            return false;
+            view.resetAllNumbers();
+            return true;
         }
 
         public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -232,6 +232,13 @@ public class MathTutor extends Activity {
             }
         }
 
+        public void resetAllNumbers()
+        {
+        	for(Targets t : icons)
+        	{
+        		t.resetImage();
+        	}
+        }
         /**
          * detects when the user touches the screen and then informs gesture
          */
@@ -296,6 +303,7 @@ public class MathTutor extends Activity {
                         		{
                         			icons.get(0).clicked(R.drawable.answerbox, MathTutor.this);
                         			createProblem();
+                        			resetAllNumbers();
                         			onSelected();
                         		}
                         	}, 1000);
@@ -304,7 +312,6 @@ public class MathTutor extends Activity {
                             outof++;
                             right.setText(String.valueOf(correct));
                         	numQuest.setText(String.valueOf(outof));
-                            t.resetImage();
                             onSelected();
                             
                         }
@@ -316,6 +323,7 @@ public class MathTutor extends Activity {
                         		{
                         			icons.get(0).clicked(R.drawable.answerbox, MathTutor.this);
                         			createProblem();
+                        			resetAllNumbers();
                         			onSelected();
                         		}
                         	}, 1000);
@@ -323,7 +331,6 @@ public class MathTutor extends Activity {
                         	outof++;
                         	right.setText(String.valueOf(correct));
                         	numQuest.setText(String.valueOf(outof));
-                        	t.resetImage();
                         	onSelected();
                         }
                         
